@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1015135155940",
+    "project_id": "quizlingo-ffe92",
+    "storage_bucket": "quizlingo-ffe92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015135155940:android:43cd9bba2ef510ceaedef1",
+        "android_client_info": {
+          "package_name": "com.example.quizlingo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015135155940-86p973pa9e5v4a6eo8tkj59u2nknvuv7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDrhZokinpMcZsERkX7gW9fGWn3F5I52Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015135155940-86p973pa9e5v4a6eo8tkj59u2nknvuv7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

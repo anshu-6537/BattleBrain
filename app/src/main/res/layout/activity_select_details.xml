@@ -55,6 +55,22 @@
             android:entries="@array/num_questions"
             android:padding="16dp" />
 
+        <TextView
+            android:id="@+id/categoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:text="@string/category"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/category"
+            android:padding="16dp" />
+
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
@@ -64,14 +80,6 @@
             android:padding="16dp"
             android:text="@string/start_quiz"
             android:textSize="18sp" />
-
-        <ProgressBar
-            android:id="@+id/quizListProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

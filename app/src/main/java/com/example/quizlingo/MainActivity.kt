@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 import pl.droidsonroids.gif.GifTextView
+import kotlin.coroutines.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     var BASE_URL = "https://opentdb.com/api.php"
     var quesnum: Int = 0
+    var cat: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,11 +30,16 @@ class MainActivity : AppCompatActivity() {
 
         val difficulty = intent.getStringExtra("diff")
         val number = intent.getStringExtra("num")
-        //Toast.makeText(this,difficulty,Toast.LENGTH_SHORT).show()
-        //Toast.makeText(this,number,Toast.LENGTH_SHORT).show()
+        val category = intent.getStringExtra("category")
+//        Toast.makeText(this, difficulty, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, number, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, category, Toast.LENGTH_SHORT).show()
         quesnum = number?.toInt()!!
+        if (category != null) {
+            cat = category.toInt()
+        }
         if (difficulty != null) {
-            fetchQuestion(quesnum, difficulty)
+            fetchQuestion(quesnum, difficulty, cat)
         } else {
             Toast.makeText(this, "difficulty and num can't be fetched", Toast.LENGTH_SHORT).show()
         }
@@ -42,28 +49,30 @@ class MainActivity : AppCompatActivity() {
 
     fun fetchQuestion(
         amount: Int,
-        difficulty: String
+        difficulty: String,
+        category: Int
     ) {
 
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
         val go_gif = findViewById<GifTextView>(R.id.go_gif)
         val const = findViewById<ConstraintLayout>(R.id.constraint)
 
-
-        val url = "$BASE_URL?amount=$amount&category=28&difficulty=$difficulty&type=multiple"
+        val url = "$BASE_URL?amount=$amount&category=$category&difficulty=$difficulty&type=multiple"
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             { response ->
                 val triviaQuestions = parseTriviaQuestions(response)
+                //Toast.makeText(this, triviaQuestions.size.toString(), Toast.LENGTH_SHORT).show()
                 val view: View = go_gif
                 view.postDelayed(
                     {
                         view.visibility = View.GONE
                         const.visibility = View.VISIBLE
                     },
-                    3000
+                    100
                 )
+                const.visibility = View.VISIBLE
                 displayQues(triviaQuestions)
             },
             { error ->
@@ -77,6 +86,7 @@ class MainActivity : AppCompatActivity() {
     private fun parseTriviaQuestions(response: JSONObject): List<Questions> {
         val resultsArray = response.optJSONArray("results")
 
+        //Toast.makeText(this,"Yesss",Toast.LENGTH_SHORT).show()
         val triviaQuestions = mutableListOf<Questions>()
         resultsArray?.let {
             for (i in 0 until it.length()) {
@@ -88,6 +98,7 @@ class MainActivity : AppCompatActivity() {
                 val incorrectAnswers = parseIncorrectAnswers(incorrectAnswersArray)
                 val triviaQuestion = Questions(question, correctAnswer, incorrectAnswers)
                 triviaQuestions.add(triviaQuestion)
+                //Toast.makeText(this, triviaQuestions.size.toString(), Toast.LENGTH_SHORT).show()
             }
         }
         return triviaQuestions
@@ -129,35 +140,64 @@ class MainActivity : AppCompatActivity() {
         radioButton3.text = questionArray[i].correctanswer
         radioButton4.text = questionArray[i].incorrectanswer[2]
         val timer = findViewById<TextView>(R.id.textView)
+        val text = findViewById<TextView>(R.id.percent)
 
         // time count down for 15 seconds,
         // with 1 second as countDown interval
-        object : CountDownTimer(14000, 1000) {
-
-            // Callback function, fired on regular interval
+//        object : CountDownTimer(10000, 1000) {
+//
+//            // Callback function, fired on regular interval
+//            override fun onTick(millisUntilFinished: Long) {
+//                timer.setText("Time remaining: " + millisUntilFinished / 1000)
+//            }
+//
+//            // Callback function, fired
+//            // when the time is up
+//            override fun onFinish() {
+//                timer.setText("Times up !")
+//
+//            }
+//        }.start()
+        val CountDownTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                timer.setText("Time remaining: " + millisUntilFinished / 1000)
+                timer.text = "Time remaining: " + millisUntilFinished / 1000
             }
-
-            // Callback function, fired
-            // when the time is up
             override fun onFinish() {
-                timer.setText("Times up !")
-
+                timer.text = "Times up !"
             }
         }.start()
 
-        val radioGroup = findViewById<RadioGroup>(R.id.radiogroup);
+
+
+        val radioGroup = findViewById<RadioGroup>(R.id.radiogroup)
+
+//        next.setOnClickListener {
+//            val selectedId = radioGroup.checkedRadioButtonId
+//            val radioButton = findViewById<RadioButton>(selectedId)
+//            if (radioButton.getText() == questionArray[i].correctanswer)
+//                userscore += 1
+//            else(radioButton==null)
+//                Toast.makeText(this,"You missed the last quiz",Toast.LENGTH_SHORT).show()
+//            radioGroup.clearCheck()
+//        }
+
 
         next.setOnClickListener {
+
             val selectedId = radioGroup.checkedRadioButtonId
             val radioButton = findViewById<RadioButton>(selectedId)
-            if (radioButton.getText() == questionArray[i].correctanswer)
-                userscore += 1
-            radioGroup.clearCheck()
-        }
 
-        next.setOnClickListener {
+            //Toast.makeText(this,radioButton.getText(),Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this,questionArray[i].correctanswer,Toast.LENGTH_SHORT).show()
+            if (selectedId == -1)
+                Toast.makeText(this, "You missed the last quiz", Toast.LENGTH_SHORT).show()
+            else if (radioButton.text == questionArray[i].correctanswer) {
+                userscore += 1
+                Toast.makeText(this, "correct", Toast.LENGTH_SHORT).show()
+            }
+            radioGroup.clearCheck()
+            timer.text = null
+            CountDownTimer.cancel()
             i++
             if (i < questionArray.size) {
                 questext.text = questionArray[i].question
@@ -165,15 +205,10 @@ class MainActivity : AppCompatActivity() {
                 radioButton2.text = questionArray[i].incorrectanswer[0]
                 radioButton3.text = questionArray[i].correctanswer
                 radioButton4.text = questionArray[i].incorrectanswer[2]
+                CountDownTimer.start()
+                //Toast.makeText(this,questionArray[i].correctanswer,Toast.LENGTH_SHORT).show()
 
-                // get selected radio button from radioGroup
-                val selectedId = radioGroup.checkedRadioButtonId
-
-                // find the radiobutton by returned id
-                val radioButton = findViewById<RadioButton>(selectedId)
-                if (radioButton.getText() == questionArray[i].correctanswer)
-                    userscore += 1
-                radioGroup.clearCheck()
+                ////////////////////////////
             } else {
                 radioButton1.visibility = View.INVISIBLE
                 radioButton2.visibility = View.INVISIBLE
@@ -185,12 +220,16 @@ class MainActivity : AppCompatActivity() {
                 score.visibility = View.VISIBLE
                 your_score.visibility = View.VISIBLE
                 progress.visibility = View.VISIBLE
+                val percen =  (userscore.toFloat()/quesnum)  * 100
+                progress.progress = percen.toInt()
+                //progress.max=100
+//                Toast.makeText(this,userscore.toString(),Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this,quesnum.toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,percen.toInt().toString(),Toast.LENGTH_SHORT).show()
                 your_score.text = userscore.toString()
-
+                val str=percen.toInt().toString()+"%"
+                text.setText(str)
             }
         }
     }
 }
-
-
-

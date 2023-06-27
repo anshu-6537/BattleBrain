@@ -14,6 +14,7 @@
     <string name="start_quiz">Start Quiz</string>
     <string name="your_score">Your Score :</string>
     <string name="next">Next</string>
+    <string name="category">Category</string>
 
     <string-array name="difficulty_levels">
         <item>Easy</item>
@@ -26,6 +27,18 @@
         <item>10</item>
         <item>15</item>
         <item>20</item>
+    </string-array>
+
+    <string-array name="category">
+        <item>General Knowledge</item>
+        <item>Books</item>
+        <item>Music</item>
+        <item>Film</item>
+        <item>Video Games</item>
+        <item>Mythology</item>
+        <item>Sports</item>
+        <item>Anime &amp; Manga</item>
+        <item>Vehicles</item>
     </string-array>
 
 </resources>

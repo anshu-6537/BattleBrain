@@ -1,10 +1,12 @@
 package com.example.quizlingo
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import org.w3c.dom.Text
 
 
 class SelectDetails : AppCompatActivity() {
@@ -12,6 +14,21 @@ class SelectDetails : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_details)
+        val curr_high=0;
+
+        val score=findViewById<TextView>(R.id.score)
+        val sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        if(sharedPref.getInt("score",0)==0) {
+            val editor = sharedPref.edit()
+            editor.apply {
+                putInt("score", curr_high)
+                apply()
+            }
+        }
+        else {
+            val currScore = sharedPref.getInt("score", 0).toString()
+            score.text = currScore
+        }
 
         val category = arrayOf("General Knowledge", "Books","Music","Film","Video Games", "Mythology", "Sports", "Anime &amp; Manga", "Vehicles")
         val categoryImg = intArrayOf(R.drawable.knowledge,R.drawable.books,R.drawable.music, R.drawable.films,R.drawable.video_games,R.drawable.mythology,R.drawable.sports,R.drawable.anime,R.drawable.vehicle)
@@ -25,8 +42,6 @@ class SelectDetails : AppCompatActivity() {
 
         val level = arrayOf("Easy", "Medium", "Hard")
         val questions = arrayOf("5", "10", "15", "20")
-//        val category = arrayOf("General Knowledge", "Books","Music","Film","Video Games", "Mythology", "Sports", "Anime &amp; Manga", "Vehicles")
-//        val categoryImg = arrayOf(R.drawable.knowledge,R.drawable.books,R.drawable.music, R.drawable.films,R.drawable.video_games,R.drawable.mythology,R.drawable.sports,R.drawable.anime,R.drawable.vehicle)
         var difficulty = ""
         var numQuestions = ""
         var cat = ""
@@ -127,6 +142,7 @@ class SelectDetails : AppCompatActivity() {
             intent.putExtra("diff", difficulty.toLowerCase())
             intent.putExtra("num", numQuestions)
             intent.putExtra("category", catInt.toString())
+//            intent.putExtra("curr" , curr_high)
             //Toast.makeText(this,catInt.toString(),Toast.LENGTH_SHORT).show()
             startActivity(intent)
         }

@@ -1,11 +1,14 @@
 package com.example.quizlingo
 
+import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.edit
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     var BASE_URL = "https://opentdb.com/api.php"
     var quesnum: Int = 0
     var cat: Int = 0
+//    var curr_high: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +35,10 @@ class MainActivity : AppCompatActivity() {
         val difficulty = intent.getStringExtra("diff")
         val number = intent.getStringExtra("num")
         val category = intent.getStringExtra("category")
-//        Toast.makeText(this, difficulty, Toast.LENGTH_SHORT).show()
-//        Toast.makeText(this, number, Toast.LENGTH_SHORT).show()
-//        Toast.makeText(this, category, Toast.LENGTH_SHORT).show()
+//        val highscore = intent.getStringExtra("curr")
+//        if (highscore != null) {
+//            curr_high = highscore.toInt()
+//        }
         quesnum = number?.toInt()!!
         if (category != null) {
             cat = category.toInt()
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     fun fetchQuestion(
         amount: Int,
         difficulty: String,
-        category: Int
+        category: Int,
     ) {
 
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
@@ -117,10 +122,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayQues(questionArray: List<Questions>) {
         val questext = findViewById<TextView>(R.id.questionTextView)
-//        val ans1 = findViewById<TextView>(R.id.option1)
-//        val ans2 = findViewById<TextView>(R.id.option2)
-//        val ans3 = findViewById<TextView>(R.id.option3)
-//        val ans4 = findViewById<TextView>(R.id.option4)
         val next = findViewById<Button>(R.id.nextButton)
         val radioButton1 = findViewById<RadioButton>(R.id.answerRadioButton1)
         val radioButton2 = findViewById<RadioButton>(R.id.answerRadioButton2)
@@ -129,6 +130,7 @@ class MainActivity : AppCompatActivity() {
         val score = findViewById<TextView>(R.id.your_score)
         val your_score = findViewById<TextView>(R.id.score)
         val progress = findViewById<ProgressBar>(R.id.progressBar)
+        val save = findViewById<Button>(R.id.saveButton)
         var i = 0
         var userscore = 0
 
@@ -170,18 +172,6 @@ class MainActivity : AppCompatActivity() {
 
 
         val radioGroup = findViewById<RadioGroup>(R.id.radiogroup)
-
-//        next.setOnClickListener {
-//            val selectedId = radioGroup.checkedRadioButtonId
-//            val radioButton = findViewById<RadioButton>(selectedId)
-//            if (radioButton.getText() == questionArray[i].correctanswer)
-//                userscore += 1
-//            else(radioButton==null)
-//                Toast.makeText(this,"You missed the last quiz",Toast.LENGTH_SHORT).show()
-//            radioGroup.clearCheck()
-//        }
-
-
         next.setOnClickListener {
 
             val selectedId = radioGroup.checkedRadioButtonId
@@ -193,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "You missed the last quiz", Toast.LENGTH_SHORT).show()
             else if (radioButton.text == questionArray[i].correctanswer) {
                 userscore += 1
-                Toast.makeText(this, "correct", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "correct", Toast.LENGTH_SHORT).show()
             }
             radioGroup.clearCheck()
             timer.text = null
@@ -220,6 +210,7 @@ class MainActivity : AppCompatActivity() {
                 score.visibility = View.VISIBLE
                 your_score.visibility = View.VISIBLE
                 progress.visibility = View.VISIBLE
+                save.visibility = View.VISIBLE
                 val percen =  (userscore.toFloat()/quesnum)  * 100
                 progress.progress = percen.toInt()
                 //progress.max=100
@@ -229,6 +220,17 @@ class MainActivity : AppCompatActivity() {
                 your_score.text = userscore.toString()
                 val str=percen.toInt().toString()+"%"
                 text.setText(str)
+                val sh = getSharedPreferences("myPref", Context.MODE_PRIVATE)
+                val editor = sh.edit()
+                val highScore=sh.getInt("score",0)
+                save.setOnClickListener {
+                    if(userscore>highScore) {
+                        editor.putInt("score",userscore)
+                        editor.commit()
+                        Log.d("helo",sh.getInt("score",0).toString())
+                        Toast.makeText(this,sh.getInt("score",-1).toString(),Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QuizLingo</string>
+    <string name="app_name">BattleBrain</string>
     <string name="select_level">Select level</string>
     <string-array name="Languages">
         <item>Easy</item>
@@ -15,6 +15,26 @@
     <string name="your_score">Your Score :</string>
     <string name="next">Next</string>
     <string name="category">Category</string>
+    <string name="na">NA</string>
+    <string name="current_high_score">Current High Score :</string>
+    <string name="select_the_game_you_want_to_play">Select the game you want to play</string>
+    <string name="rock_paper_scissor">Rock Paper Scissor</string>
+    <string name="quizlingo">QuizLingo</string>
+
+
+    <string name="reset">Reset</string>
+    <string name="you">You</string>
+    <string name="ai">AI</string>
+    <string name="lose">You Lose !!!</string>
+    <string name="again">again</string>
+    <string name="cancel">Cancel</string>
+    <string name="play_again">Play again</string>
+    <string name="exit">exit</string>
+    <string name="you_won">You Won</string>
+    <string name="you_lost">You Lost</string>
+    <string name="choose">choose</string>
+    <string name="middledot">::</string>
+    <string name="lost_won_tie">lost,won,tie</string>
 
     <string-array name="difficulty_levels">
         <item>Easy</item>

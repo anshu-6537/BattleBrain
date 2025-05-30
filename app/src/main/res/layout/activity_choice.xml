@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChoiceActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="120dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/select_the_game_you_want_to_play"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/rock_paper_sci"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="300dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rock_paper_scissor"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/quiz"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/rock_paper_sci"
+        android:text="@string/rock_paper_scissor"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/rock_paper_sci"
+        app:layout_constraintRight_toRightOf="@id/rock_paper_sci"
+        />
+
+    <ImageButton
+        android:id="@+id/quiz"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="300dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/brain"
+        app:layout_constraintLeft_toLeftOf="@id/rock_paper_sci"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/quiz"
+        android:text="@string/quizlingo"
+        app:layout_constraintTop_toBottomOf="@id/quiz"
+        app:layout_constraintRight_toRightOf="@id/quiz"
+        android:textStyle="bold"/>
+
+    <ImageButton
+        android:id="@+id/tic_tac"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tic_tac_toe_game"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rock_paper_sci"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/tic_tac"
+        android:text="@string/quizlingo"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tic_tac"
+        app:layout_constraintRight_toRightOf="@id/tic_tac" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

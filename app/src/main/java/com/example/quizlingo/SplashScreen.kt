@@ -10,7 +10,7 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-        val homeIntent= Intent(this@SplashScreen,SelectDetails::class.java)
+        val homeIntent= Intent(this@SplashScreen,ChoiceActivity::class.java)
 
         Handler().postDelayed({
             startActivity(homeIntent)
